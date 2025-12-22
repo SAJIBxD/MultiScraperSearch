@@ -13,7 +13,7 @@ def get_scrappers():
 
 app = FastAPI()
 
-origins = ["http://localhost:63342"]
+origins = ["https://extraordinary-begonia-e2548e.netlify.app/"]
 
 app.add_middleware(
     CORSMiddleware,
