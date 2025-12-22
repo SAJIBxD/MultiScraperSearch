@@ -13,11 +13,11 @@ def get_scrappers():
 
 app = FastAPI()
 
-origins = ["https://extraordinary-begonia-e2548e.netlify.app/"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 memory = ["info"]
