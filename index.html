@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multi-Scraper Search</title>
+
+  <style>
+    body {
+      background: #111;
+      color: #eee;
+      font-family: system-ui, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      width: 280px;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .source {
+      margin-top: 30px;
+    }
+
+    .source h2 {
+      border-bottom: 1px solid #333;
+      padding-bottom: 6px;
+      text-transform: capitalize;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .card {
+      background: #1c1c1c;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 13px;
+      margin-top: 8px;
+      line-height: 1.3;
+    }
+
+    .status {
+      opacity: 0.8;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Movie / Series Search</h1>
+
+  <!-- FORM: Enter works here -->
+  <form id="searchForm">
+    <input
+      id="searchInput"
+      placeholder="Search…"
+      autocomplete="off"
+    />
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script>
+    const form = document.getElementById("searchForm");
+    const input = document.getElementById("searchInput");
+    const resultsDiv = document.getElementById("results");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault(); // stop page reload
+      await search();
+    });
+
+    async function search() {
+      const keyword = input.value.trim();
+      if (!keyword) return;
+
+      resultsDiv.innerHTML = '<div class="status">Loading…</div>';
+
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/search/${encodeURIComponent(keyword)}`
+        );
+
+        const data = await response.json();
+
+        resultsDiv.innerHTML = "";
+
+        // data format:
+        // [
+        //   { "mlwbd": [ ... ] },
+        //   { "MoviesMod": [ ... ] }
+        // ]
+
+        data.forEach(sourceObj => {
+          const sourceName = Object.keys(sourceObj)[0];
+          const items = sourceObj[sourceName];
+
+          const sourceSection = document.createElement("div");
+          sourceSection.className = "source";
+          sourceSection.innerHTML = `<h2>${sourceName}</h2>`;
+
+          const grid = document.createElement("div");
+          grid.className = "grid";
+
+          items.forEach(item => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+              <a href="${item.url}" target="_blank" rel="noopener">
+                <img src="${item.thumbnail}" alt="">
+              </a>
+              <div class="title">${item.title}</div>
+            `;
+
+            grid.appendChild(card);
+          });
+
+          sourceSection.appendChild(grid);
+          resultsDiv.appendChild(sourceSection);
+        });
+
+      } catch (error) {
+        console.error(error);
+        resultsDiv.innerHTML =
+          '<div class="status">Failed to load results.</div>';
+      }
+    }
+  </script>
+
+</body>
+</html>
