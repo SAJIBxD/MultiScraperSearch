@@ -108,7 +108,7 @@
 
       try {
         const response = await fetch(
-          `https://multiscrapersearch.onrender.com/search/${encodeURIComponent(keyword)}`
+          `/search/${encodeURIComponent(keyword)}`
         );
 
         const data = await response.json();

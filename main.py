@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 # from pydantic import BaseModel
 # from typing import List
 from scrapper import Mlwbd , MoviesMod
@@ -21,6 +22,10 @@ app.add_middleware(
 )
 
 memory = ["info"]
+
+@app.get("/")
+async def read_index():
+    return FileResponse("index.html")
 
 @app.get("/search/{query}")
 def get_info(query: str):
