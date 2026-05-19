@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 # from pydantic import BaseModel
 # from typing import List
-from scrapper import Mlwbd, MoviesMod, MoviesLeech
+from scrapers import Mlwbd, MoviesMod, MoviesLeech
 
 def get_scrappers():
     return [
@@ -23,13 +23,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/template", StaticFiles(directory="template"), name="template")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 memory = ["info"]
 
 @app.get("/")
 async def read_index():
-    return FileResponse("template/index.html")
+    return FileResponse("static/index.html")
 
 @app.get("/search/{query}")
 def get_info(query: str):
