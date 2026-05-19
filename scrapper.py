@@ -8,7 +8,7 @@ headers = {
 
 class Mlwbd:
     def __init__(self):
-        self.base_url = "https://freefunz.com/?s={}"
+        self.base_url = "https://fojik.com/?s={}"
 
     def get_name(self) -> str:
         return "mlwbd"
@@ -24,7 +24,7 @@ class Mlwbd:
             title = title_tag.text.strip()
             url = title_tag["href"]
             thumbnail = item.select_one(".image img")["src"]
-
+            
             results.append({
                 "title": title,
                 "url": url,
