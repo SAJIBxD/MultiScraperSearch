@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 # from pydantic import BaseModel
 # from typing import List
 from scrapper import Mlwbd, MoviesMod, MoviesLeech
@@ -22,11 +23,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/template", StaticFiles(directory="template"), name="template")
+
 memory = ["info"]
 
 @app.get("/")
 async def read_index():
-    return FileResponse("index.html")
+    return FileResponse("template/index.html")
 
 @app.get("/search/{query}")
 def get_info(query: str):
