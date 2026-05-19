@@ -32,6 +32,7 @@ class Mlwbd:
             })
 
         return results
+    
 class MoviesMod:
 
     def __init__(self):
@@ -88,5 +89,3 @@ class MoviesLeech:
             })
 
         return results
-
-
