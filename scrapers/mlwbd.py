@@ -47,6 +47,8 @@ class Mlwbd(BaseScraper):
         items = soup.find_all("div", class_="result-item")
         results = []
         for item in items:
+            if len(results) >= self.MAX_ITEMS:
+                break
             title_tag = item.select_one(".details .title a")
             if not title_tag:
                 continue

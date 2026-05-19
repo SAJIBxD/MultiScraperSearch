@@ -15,6 +15,7 @@ class BaseScraper(abc.ABC):
     """Abstract base class for scrapers."""
 
     headers = HEADERS
+    MAX_ITEMS = 10
 
     @abc.abstractmethod
     def get_name(self) -> str:

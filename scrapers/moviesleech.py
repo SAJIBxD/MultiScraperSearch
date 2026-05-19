@@ -15,6 +15,8 @@ class MoviesLeech(BaseScraper):
         items = soup.select("ul.ajax-search-results > li")
         results = []
         for item in items:
+            if len(results) >= self.MAX_ITEMS:
+                break
             title_tag = item.select_one("a")
             if not title_tag:
                 continue

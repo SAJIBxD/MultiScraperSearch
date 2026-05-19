@@ -15,6 +15,8 @@ class MoviesMod(BaseScraper):
         items = soup.find_all("article", class_="latestPost")
         results = []
         for item in items:
+            if len(results) >= self.MAX_ITEMS:
+                break
             title_tag = item.select_one("h2.title a")
             if not title_tag:
                 continue
