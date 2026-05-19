@@ -60,6 +60,33 @@ class MoviesMod:
 
         return results
 
+class MoviesLeech:
 
+    def __init__(self):
+        self.base_url = "https://moviesleech.link/wp-admin/admin-ajax.php?action=mts_search&q={}"
+
+    def get_name(self):
+        return "MoviesLeech"
+
+    def request(self, query: str):
+        url = self.base_url.format(query)
+        r = requests.get(url, headers=headers)
+        soup = BeautifulSoup(r.text, "lxml")
+        items = soup.select("ul.ajax-search-results > li")
+        results = []
+        for item in items:
+            title_tag = item.select_one("a")
+            image_tag = item.select_one("img")
+            title = " ".join(title_tag.stripped_strings)
+            url = title_tag.get("href", "")
+            thumbnail = image_tag.get("src", "") if image_tag else ""
+
+            results.append({
+                "title": title,
+                "url": url,
+                "thumbnail": thumbnail
+            })
+
+        return results
 
 

@@ -4,12 +4,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 # from pydantic import BaseModel
 # from typing import List
-from scrapper import Mlwbd , MoviesMod
+from scrapper import Mlwbd, MoviesMod, MoviesLeech
 
 def get_scrappers():
     return [
         Mlwbd(),
-        MoviesMod()
+        MoviesMod(),
+        MoviesLeech()
     ]
 
 app = FastAPI()
